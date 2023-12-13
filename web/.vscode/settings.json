@@ -1,3 +1,14 @@
 {
-  "cSpell.words": ["Keycloak", "SQLALCHEMY"]
+  "cSpell.words": [
+    "Formik",
+    "hocs",
+    "Keycloak",
+    "reduxjs",
+    "SQLALCHEMY",
+    "tailwindcss"
+  ],
+  "sonarlint.connectedMode.project": {
+    "connectionId": "http-10-14-141-117-9000",
+    "projectKey": "devops-insights-app-web"
+  }
 }
