@@ -21,7 +21,10 @@
     ],
     "paths": {
       "@/*": ["./*"],
-      "@components/*": ["./src/components/*"]
+      "@components/*": ["./src/components/*"],
+      "@redux/*": ["./src/redux/*"],
+      "@configs/*": ["./src/configs/*"],
+      "@helpers/*": ["./src/helpers/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

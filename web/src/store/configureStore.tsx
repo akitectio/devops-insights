@@ -1,14 +1,15 @@
-import { configureStore } from '@reduxjs/toolkit';
-import { setupListeners } from '@reduxjs/toolkit/query';
-import { apiSlice } from '../features/api/apiSlice'; // Path to your API slice
+import { configureStore } from "@reduxjs/toolkit";
+import { setupListeners } from "@reduxjs/toolkit/query";
+import createSagaMiddleware from "redux-saga";
+import rootSaga from "./rootSaga";
+import rootReducer from "./rootReducer";
+const sagaMiddleware = createSagaMiddleware();
 
 export const store = configureStore({
-  reducer: {
-    // other reducers
-    [apiSlice.reducerPath]: apiSlice.reducer,
-  },
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(apiSlice.middleware),
+  reducer: rootReducer,
+  middleware: (getDefaultMiddleware: any) =>
+    getDefaultMiddleware().concat(sagaMiddleware),
 });
 
+sagaMiddleware.run(rootSaga);
 setupListeners(store.dispatch);

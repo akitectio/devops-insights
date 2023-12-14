@@ -1,9 +1,17 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import axiosInstance from "../../api/axios";
+import axiosInstance from "@/src/configs/axios/instance";
+
+const axiosMethod = {
+  GET: "get",
+  POST: "post",
+  PUT: "put",
+  DELETE: "delete",
+};
+
+type Method = (typeof axiosMethod)[keyof typeof axiosMethod];
 
 interface AxiosBaseQueryParams {
   url: string;
-  method: "get" | "post" | "put" | "delete";
+  method: Method;
   data?: any;
 }
 
@@ -26,16 +34,4 @@ const axiosBaseQuery = async ({ url, method, data }: AxiosBaseQueryParams) => {
   }
 };
 
-export const apiSlice = createApi({
-  reducerPath: "api",
-  baseQuery: axiosBaseQuery,
-  endpoints: (builder) => ({
-    login: builder.mutation({
-      query: (credentials: { username: string; password: string }) => ({
-        url: "/login",
-        method: "post",
-        data: credentials,
-      }),
-    }),
-  }),
-});
+export { axiosBaseQuery, axiosMethod };

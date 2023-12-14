@@ -3,6 +3,7 @@
     "Formik",
     "hocs",
     "Keycloak",
+    "languagedetector",
     "reduxjs",
     "SQLALCHEMY",
     "tailwindcss"

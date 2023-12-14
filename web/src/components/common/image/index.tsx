@@ -9,6 +9,7 @@ interface ImageProps {
   height?: number;
   fill?: boolean;
   className?: string;
+  priority?: boolean;
 }
 
 const MyImage: React.FC<ImageProps> = ({
@@ -16,12 +17,20 @@ const MyImage: React.FC<ImageProps> = ({
   alt,
   width,
   height,
+  priority = false,
   fill = false,
   className,
 }) => {
   return (
     <div className={className}>
-      <Image src={src} alt={alt} width={width} height={height} fill={fill} />
+      <Image
+        src={src}
+        alt={alt}
+        width={width}
+        height={height}
+        fill={fill}
+        priority={priority}
+      />
     </div>
   );
 };
