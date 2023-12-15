@@ -1,10 +1,12 @@
 import { Formik, Form } from "formik";
-import React from "react";
-import { Input, Image, Button } from "@components/common";
+import React, { useState } from "react";
+import { Input, Image, Button, InputGroup } from "@components/common";
 import * as Yup from "yup";
 import { useTranslation } from "next-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { loginRequest } from "@redux/auth/slice";
+import { loading, error } from "@/src/redux/auth/selectors";
+import { FiEye, FiEyeOff } from "react-icons/fi";
 
 interface FormValues {
   username: string;
@@ -14,6 +16,15 @@ interface FormValues {
 const LoginForm = () => {
   const { t } = useTranslation(["login"]);
   const dispatch = useDispatch();
+
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handlePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const _loading = useSelector(loading);
+  const _error = useSelector(error);
 
   const validationSchema = Yup.object({
     username: Yup.string().required(t("login:username_required")),
@@ -39,12 +50,16 @@ const LoginForm = () => {
       </div>
 
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+        {_error?.status && (
+          <div className="text-red-500 text-center">
+            {_error.error_description}
+          </div>
+        )}
         <Formik
           className="space-y-6"
           initialValues={{ username: "", password: "" }}
           validationSchema={validationSchema}
           onSubmit={(values: FormValues) => {
-            console.log(values);
             dispatch(loginRequest(values));
           }}
         >
@@ -55,11 +70,19 @@ const LoginForm = () => {
               type="text"
               placeholder={t("login:username")}
             />
-            <Input
+            <InputGroup
               groupClassName="mb-3"
               name="password"
-              type="password"
+              type={showPassword ? "text" : "password"}
               placeholder={t("login:password")}
+              icon={
+                showPassword ? (
+                  <FiEyeOff className="text-gray-400" />
+                ) : (
+                  <FiEye className="text-gray-400" />
+                )
+              }
+              onIconClick={handlePasswordVisibility}
             />
             <Button
               type="submit"
