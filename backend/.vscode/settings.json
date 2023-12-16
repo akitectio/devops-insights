@@ -3,5 +3,5 @@
     "connectionId": "http-10-14-141-117-9000",
     "projectKey": "devops-insights-api"
   },
-  "cSpell.words": ["KEYCLOAK"]
+  "cSpell.words": ["jsonify", "KEYCLOAK"]
 }

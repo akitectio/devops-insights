@@ -1,16 +1,15 @@
-// hooks/useAuthRedirect.ts
-import { useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import { useRouter } from 'next/router';
-import { selectIsLoggedIn } from '@/src/redux/auth/selectors'; // Adjust the path as needed
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
+import { useRouter } from "next/router";
+import { isLogin } from "@/src/redux/auth/selectors";
 
 const useAuth = () => {
-  const isLoggedIn = useSelector(selectIsLoggedIn);
+  const isLoggedIn = useSelector(isLogin);
   const router = useRouter();
 
   useEffect(() => {
     if (!isLoggedIn) {
-      router.push('/login');
+      router.push("/login");
     }
   }, [isLoggedIn, router]);
 };

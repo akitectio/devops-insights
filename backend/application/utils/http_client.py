@@ -16,3 +16,8 @@ class HttpClient:
         url = f"{self.base_url}/{endpoint}"
         response = requests.post(url, data=data, json=json, headers=headers)
         return response
+
+
+class HttpContentType:
+    JSON = "application/json"
+    FORM_URLENCODED = "application/x-www-form-urlencoded"

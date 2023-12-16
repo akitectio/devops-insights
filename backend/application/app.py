@@ -1,6 +1,7 @@
 from flask import Flask, request
 from application.api import (
-    auth_api_blueprint,
+    grant_api_blueprint,
+    auth_api_blueprint
 )
 from application.utils.http_code import HttpCode
 from jwt import ExpiredSignatureError
@@ -49,4 +50,5 @@ def configure_token_error(app):
 
 def register_blueprints(app):
     """Register all blueprints for application"""
+    app.register_blueprint(grant_api_blueprint)
     app.register_blueprint(auth_api_blueprint)

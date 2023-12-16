@@ -1,8 +1,8 @@
 import React from "react";
-import withAuth from "../hocs/withAuth";
+import withAuth from "@hooks/useAuth";
 
-function HomePage() {
+const HomePage = () => {
   return <div>Welcome to the Home Page!</div>;
-}
+};
 
 export default withAuth(HomePage);

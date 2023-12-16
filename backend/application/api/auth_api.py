@@ -1,26 +1,22 @@
 from flask import Blueprint, request, jsonify
-from application.utils.keycloak_client import KeycloakClient
-
+from application.utils.http_code import HttpCode
+from application.services.keycloak.auth import get_user_info
 
 auth_api_blueprint = Blueprint("auth", __name__, url_prefix="/auth")
 
 
-@auth_api_blueprint.route("/login", methods=["POST"])
-def post():
-    data = request.json
-    username = data.get("username")
-    password = data.get("password")
+@auth_api_blueprint.route("/user_info", methods=["GET"])
+def user_info():
+    access_token = request.headers.get('Authorization', None)
+    if not access_token:
+        return jsonify({"error": "Authorization token is required"}), HttpCode.BAD_REQUEST
 
-    if not username or not password:
-        return jsonify({"error": "Thiếu username hoặc password"}), 400
-
-    keycloak_client = KeycloakClient()
     try:
-        token_response = keycloak_client.login(username, password)
-        if 'error' in token_response:
-            if token_response.get('error_description') == 'Invalid user credentials':
-                return jsonify({"error": "Sai mật khẩu"}), 401
-            return jsonify({"error": token_response.get('error_description')}), 401
-        return jsonify(token_response), 200
+        user_info = get_user_info(access_token)
+        if user_info.get("error"):
+            return jsonify({"error": user_info.get("error")}), HttpCode.INTERNAL_ERROR
+
+        return jsonify({"user_info": user_info}), HttpCode.OK
+
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        return jsonify({"error": str(e)}), HttpCode.INTERNAL_ERROR
