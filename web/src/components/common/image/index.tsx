@@ -15,8 +15,8 @@ interface ImageProps {
 const MyImage: React.FC<ImageProps> = ({
   src,
   alt,
-  width,
-  height,
+  width = undefined,
+  height = undefined,
   priority = false,
   fill = false,
   className,

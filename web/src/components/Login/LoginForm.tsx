@@ -5,7 +5,6 @@ import * as Yup from "yup";
 import { useTranslation } from "next-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { loginRequest } from "@redux/auth/slice";
-import { loading, error } from "@redux/auth/selectors";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import { LoginPayload } from "@_types/auth";
 
@@ -19,8 +18,11 @@ const LoginForm = () => {
     setShowPassword(!showPassword);
   };
 
-  const _loading = useSelector(loading);
-  const _error = useSelector(error);
+  // const _loading = useSelector(loading);
+  // const _error = useSelector(error);
+
+  // console.log("_loading", _loading);
+  // console.log("_error", _error);
 
   const validationSchema = Yup.object({
     username: Yup.string().required(t("login:username_required")),
@@ -46,9 +48,9 @@ const LoginForm = () => {
       </div>
 
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-        {_error?.status && (
+        {/* {_error?.status && (
           <Alert type="error" message={_error.error_description} />
-        )}
+        )} */}
         <Formik
           className="space-y-6"
           initialValues={{ username: "", password: "" }}
