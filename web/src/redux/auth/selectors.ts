@@ -1,7 +1,7 @@
 import { stateSelectors } from "@/src/types/auth";
 
 export const isLoggedInSelector = (state: stateSelectors) =>
-  state.auth.isLoggedIn;
+  state.auth.token !== null;
 
 export const isLoadingSelector = (state: stateSelectors) =>
   state.auth.isLoading;

@@ -31,7 +31,8 @@
       "@utils/*": ["./src/utils/*"],
       "@pages/*": ["./src/pages/*"],
       "@store/*": ["./src/store/*"],
-      "@_types/*": ["./src/types/*"]
+      "@_types/*": ["./src/types/*"],
+      "@layouts/*": ["./src/layouts/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

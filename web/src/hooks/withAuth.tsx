@@ -2,6 +2,8 @@ import React, { ComponentType, useEffect, PropsWithChildren } from "react";
 import { useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import { isLoggedInSelector } from "@redux/auth/selectors";
+import AdminLayout from "@layouts/AdminLayout";
+import LoginLayout from "@layouts/LoginLayout";
 
 const withAuth = (WrappedComponent: ComponentType<any>) => {
   return (props: PropsWithChildren<{}>) => {
@@ -9,12 +11,24 @@ const withAuth = (WrappedComponent: ComponentType<any>) => {
     const router = useRouter();
 
     useEffect(() => {
-      if (!isLoggedIn) {
+      const token = localStorage.getItem("access_token");
+      if (!isLoggedIn && !token) {
         router.push("/login");
+      } else if (!isLoggedIn && token) {
+        router.push("/dashboard");
       }
-    }, [isLoggedIn, router]);
+    }, [isLoggedIn]);
 
-    return isLoggedIn ? <WrappedComponent {...props} /> : null;
+    // Pass additional props to the WrappedComponent
+    return isLoggedIn ? (
+      <AdminLayout>
+        <WrappedComponent {...props} additionalProp="value" />
+      </AdminLayout>
+    ) : (
+      <LoginLayout>
+        <WrappedComponent {...props} additionalProp="value" />
+      </LoginLayout>
+    );
   };
 };
 

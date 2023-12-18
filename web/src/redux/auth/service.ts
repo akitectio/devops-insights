@@ -22,4 +22,22 @@ export const authService = {
   },
 };
 
-export default authService;
+export const refreshTokenService = {
+  login: async (username: string, password: string) => {
+    try {
+      const response = await axiosBaseQuery({
+        url: API_PATHS.LOGIN,
+        method: axiosMethod.POST,
+        data: { username, password },
+      });
+      return response;
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error("Error occurred during login:", error.message);
+      }
+      throw new Error(
+        "Failed to log in. Please check your username and password."
+      );
+    }
+  },
+};

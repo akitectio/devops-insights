@@ -1,5 +1,11 @@
-import { call, put, takeLatest } from "redux-saga/effects";
-import { loginRequest, loginSuccess, loginFailure } from "@redux/auth/slice";
+import { call, put, takeLatest, takeLeading } from "redux-saga/effects";
+import {
+  loginRequest,
+  loginSuccess,
+  loginFailure,
+  refreshTokenSuccess,
+  refreshTokenFailure,
+} from "@redux/auth/slice";
 import { LoginPayload, LoginResponse } from "@_types/auth";
 
 import { authService } from "@redux/auth/service";
@@ -31,6 +37,18 @@ function* handleLogin(action: PayloadAction<LoginPayload>) {
   }
 }
 
+function* refreshTokenSaga() {
+  // try {
+  //   const refreshToken = localStorage.getItem("refresh_token");
+  //   const response = yield call(axios.post, "/refresh-token", { refreshToken });
+  //   localStorage.setItem("access_token", response.data.access_token);
+  //   yield put(refreshTokenSuccess(response.data.access_token));
+  // } catch (error) {
+  //   yield put(refreshTokenFailure(error.message));
+  // }
+}
+
 export default function* watchLoginSaga() {
   yield takeLatest(loginRequest.type, handleLogin);
+  yield takeLeading("auth/refreshToken", refreshTokenSaga);
 }

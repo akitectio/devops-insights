@@ -10,8 +10,9 @@ import { LoginPayload } from "@_types/auth";
 import {
   isLoadingSelector,
   errorSelector,
-  authSelector,
+  isLoggedInSelector,
 } from "@redux/auth/selectors";
+import Router from "next/router";
 
 const LoginForm = () => {
   const { t } = useTranslation(["login"]);
@@ -25,11 +26,11 @@ const LoginForm = () => {
 
   const _loading = useSelector(isLoadingSelector);
   const _error = useSelector(errorSelector);
-  const _auth = useSelector(authSelector);
+  const _isLoggedIn = useSelector(isLoggedInSelector);
 
-  console.log("_loading", _loading);
-  console.log("_error", _error);
-  console.log("_auth", _auth);
+  if (_isLoggedIn) {
+    Router.push("/");
+  }
 
   const validationSchema = Yup.object({
     username: Yup.string().required(t("login:username_required")),
@@ -55,9 +56,9 @@ const LoginForm = () => {
       </div>
 
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-        {/* {_error?.status && (
-          <Alert type="error" message={_error.error_description} />
-        )} */}
+        {_error?.status && _error.data && (
+          <Alert type="error" message={_error.data.message} />
+        )}
         <Formik
           className="space-y-6"
           initialValues={{ username: "", password: "" }}
