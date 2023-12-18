@@ -1,15 +1,33 @@
 import { call, put, takeLatest } from "redux-saga/effects";
-import axios from "axios";
 import { loginRequest, loginSuccess, loginFailure } from "@redux/auth/slice";
-import { LoginPayload } from "@/src/types/auth";
+import { LoginPayload, LoginResponse } from "@_types/auth";
 
-function* handleLogin(action: LoginPayload) {
+import { authService } from "@redux/auth/service";
+import { PayloadAction } from "@reduxjs/toolkit";
+import { AxiosResponse } from "axios";
+
+function* handleLogin(action: PayloadAction<LoginPayload>) {
   try {
-    const response = yield call(axios.post, "/api/login", action.payload);
-    yield put(loginSuccess(response.data));
-    // Xử lý chuyển hướng ở đây (nếu cần)
-  } catch (error) {
-    yield put(loginFailure(error.message));
+    const response: AxiosResponse<LoginResponse> = yield call(
+      authService.login,
+      action.payload.username,
+      action.payload.password
+    );
+    if (response.status == 401) {
+      console.log("401");
+      yield put(
+        loginFailure({
+          status: true,
+          data: {
+            message: "Username or password is incorrect",
+          },
+        })
+      );
+    } else {
+      yield put(loginSuccess(response.data));
+    }
+  } catch (error: any) {
+    yield put(loginFailure(error));
   }
 }
 

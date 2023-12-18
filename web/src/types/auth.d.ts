@@ -4,24 +4,37 @@ export interface LoginPayload {
 }
 
 export interface LoginResponse {
-  access_token: string;
-  expires_in: number;
-  not_before_policy: number;
-  refresh_expires_in: number;
-  refresh_token: string;
-  scope: string;
-  session_state: string;
-  token_type: string;
+  status: boolean;
+  data: {
+    access_token: string;
+    expires_in: number;
+    not_before_policy: number;
+    refresh_expires_in: number;
+    refresh_token: string;
+    scope: string;
+    session_state: string;
+    token_type: string;
+  } | null;
 }
 
-export interface LoginState {
-  loading: boolean;
+export interface authState {
+  isLoading: boolean;
   token: LoginResponse | null;
   error: ErrorState | null;
 }
 
-export interface ErrorState {
-  error_description: string;
+interface stateSelectors {
+  auth: {
+    isLoggedIn: boolean;
+    isLoading: boolean;
+    error: ErrorState | null;
+    token: LoginResponse | null;
+  };
+}
+
+interface ErrorState {
   status: boolean;
-  code: string | null;
+  data: {
+    message: string;
+  } | null;
 }

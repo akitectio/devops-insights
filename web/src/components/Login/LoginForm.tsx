@@ -7,6 +7,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { loginRequest } from "@redux/auth/slice";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import { LoginPayload } from "@_types/auth";
+import {
+  isLoadingSelector,
+  errorSelector,
+  authSelector,
+} from "@redux/auth/selectors";
 
 const LoginForm = () => {
   const { t } = useTranslation(["login"]);
@@ -18,11 +23,13 @@ const LoginForm = () => {
     setShowPassword(!showPassword);
   };
 
-  // const _loading = useSelector(loading);
-  // const _error = useSelector(error);
+  const _loading = useSelector(isLoadingSelector);
+  const _error = useSelector(errorSelector);
+  const _auth = useSelector(authSelector);
 
-  // console.log("_loading", _loading);
-  // console.log("_error", _error);
+  console.log("_loading", _loading);
+  console.log("_error", _error);
+  console.log("_auth", _auth);
 
   const validationSchema = Yup.object({
     username: Yup.string().required(t("login:username_required")),

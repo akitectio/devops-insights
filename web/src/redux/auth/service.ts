@@ -10,7 +10,7 @@ export const authService = {
         method: axiosMethod.POST,
         data: { username, password },
       });
-      return response.data;
+      return response;
     } catch (error) {
       if (error instanceof Error) {
         console.error("Error occurred during login:", error.message);
