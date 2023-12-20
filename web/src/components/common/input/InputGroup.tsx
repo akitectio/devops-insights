@@ -1,82 +1,39 @@
-import React, { CSSProperties, MouseEventHandler, ReactNode } from "react";
+import React, { ReactNode } from "react";
 import { useField } from "formik";
-import { BaseInput, BaseInputProps } from "./BaseInput";
+import { InputGroup, Form } from "react-bootstrap";
 
-interface InputGroupProps extends BaseInputProps {
-  label?: string;
-  className?: string;
-  placeholder?: string;
-  groupStyle?: CSSProperties;
-  labelStyle?: CSSProperties;
-  errorStyle?: CSSProperties;
-  iconStyle?: CSSProperties;
-  iconClassName?: string;
-  groupClassName?: string;
-  labelClassName?: string;
-  inputClassName?: string;
+interface InputGroupComponentProps {
+  name: string;
+  type: string;
+  placeholder: string;
   icon?: ReactNode;
-  onIconClick?: MouseEventHandler<HTMLDivElement>;
 }
 
-const InputGroup: React.FC<InputGroupProps> = ({
-  label,
-  inputClassName,
+const InputGroupComponent: React.FC<InputGroupComponentProps> = ({
+  name,
+  type,
   placeholder,
-  groupStyle,
-  labelStyle,
-  groupClassName,
-  labelClassName,
-  errorStyle,
   icon,
-  iconStyle,
-  iconClassName = "",
-  onIconClick,
-  ...props
 }) => {
-  const [field, meta] = useField(props);
+  const [field, meta] = useField(name);
+
   return (
-    <div
-      style={groupStyle}
-      className={`flex flex-col space-y-2 ${groupClassName}`}
-    >
-      {label && (
-        <label
-          htmlFor={props.name}
-          className={`block text-sm font-medium ${labelClassName}  ${
-            meta.touched && meta.error ? "text-red-500" : null
-          }`}
-          style={labelStyle}
-        >
-          {label}
-        </label>
-      )}
-      <div className="relative">
-        <BaseInput
-          {...field}
-          {...props}
-          placeholder={placeholder}
-          inputClassName={`border rounded-md p-2 w-full ${inputClassName} ${
-            meta.touched && meta.error ? "border-red-500" : null
-          }`}
-        />
-        {icon && (
-          <div
-            className={`absolute inset-y-0 right-5 flex items-center ${iconClassName}`}
-            style={{ ...iconStyle }}
-            onClick={onIconClick}
-          >
-            {icon}
-          </div>
-        )}
-      </div>
-      {meta.touched && meta.error ? (
-        <div className="text-red-500 text-xs" style={errorStyle}>
+    <InputGroup className="mb-3">
+      <Form.Control
+        {...field}
+        type={type}
+        placeholder={placeholder}
+        isValid={meta.touched && !meta.error}
+        isInvalid={meta.touched && !!meta.error}
+      />
+      {icon && <InputGroup.Text>{icon}</InputGroup.Text>}
+      {meta.touched && meta.error && (
+        <Form.Control.Feedback type="invalid">
           {meta.error}
-        </div>
-      ) : null}
-    </div>
+        </Form.Control.Feedback>
+      )}
+    </InputGroup>
   );
 };
 
-export { InputGroup };
-export type { InputGroupProps };
+export default InputGroupComponent;

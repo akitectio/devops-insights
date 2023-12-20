@@ -1,4 +1,5 @@
 import React, { FC, ReactNode } from "react";
+import Button from "react-bootstrap/Button";
 
 interface IconProps {
   icon: ReactNode;
@@ -32,31 +33,32 @@ export const Icon: FC<IconProps> = ({
     return raised ? "white" : "transparent";
   };
 
-  const containerClasses = `${className} ${reverse || raised ? "m-1.5" : ""} ${
+  const containerClasses = `d-inline-flex p-1 ${
     disabled ? "opacity-50" : ""
-  }`;
-  const iconClasses = `${isRotateRTL ? "rotate-180" : ""}`;
+  } ${className}`;
+  const iconClasses = `flex-center ${isRotateRTL ? "rotate-180" : ""}`;
+
+  const iconStyle = {
+    color: reverse ? reverseColor : color,
+    fontSize: size,
+    width: size * 2,
+    height: size * 2,
+    borderRadius: size,
+  };
 
   return (
     <div className={containerClasses}>
-      <button
-        className={`flex items-center justify-center ${raised ? "shadow" : ""}`}
+      <Button
+        variant={raised ? "outline-secondary" : ""}
         style={{
           backgroundColor: getBackgroundColor(),
-          width: size * 2,
-          height: size * 2,
-          borderRadius: size,
+          ...iconStyle,
         }}
         disabled={disabled}
         onClick={onPress}
       >
-        <div
-          className={iconClasses}
-          style={{ color: reverse ? reverseColor : color, fontSize: size }}
-        >
-          {icon}
-        </div>
-      </button>
+        <div className={iconClasses}>{icon}</div>
+      </Button>
     </div>
   );
 };

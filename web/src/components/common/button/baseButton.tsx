@@ -1,4 +1,5 @@
 import React from "react";
+import Button from "react-bootstrap/Button";
 
 interface ButtonProps {
   type: "button" | "submit" | "reset";
@@ -6,13 +7,13 @@ interface ButtonProps {
   children: React.ReactNode;
 }
 
-const baseButton: React.FC<ButtonProps> = ({ type, className, children }) => {
+const BaseButton: React.FC<ButtonProps> = ({ type, className, children }) => {
   return (
-    <button type={type} className={className}>
+    <Button type={type} className={className}>
       {children}
-    </button>
+    </Button>
   );
 };
 
-export default baseButton;
+export default BaseButton;
 export type { ButtonProps };

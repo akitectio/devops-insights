@@ -1,5 +1,5 @@
 import React from "react";
-import LoginForm from "@components/Login/LoginForm";
+import LoginForm from "@/src/components/auth/LoginForm";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { GetServerSideProps } from "next";
 

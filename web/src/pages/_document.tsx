@@ -8,10 +8,15 @@ class MyDocument extends Document {
     const currentLocale =
       this.props.__NEXT_DATA__.locale ?? i18nextConfig.i18n.defaultLocale;
     return (
-      <Html className="h-full bg-white" lang={currentLocale}>
-        <Head />
-        <body className="h-full">
-          <Main />
+      <Html lang={currentLocale}>
+        <body>
+          <Head />
+          <div className="content-wrapper">
+            <div className="pt-3" />
+            <section className="content">
+              <Main />
+            </section>
+          </div>
           <NextScript />
         </body>
       </Html>

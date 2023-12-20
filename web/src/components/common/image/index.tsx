@@ -1,5 +1,4 @@
 import Image from "next/image";
-
 import React from "react";
 
 interface ImageProps {
@@ -17,18 +16,18 @@ const MyImage: React.FC<ImageProps> = ({
   alt,
   width = undefined,
   height = undefined,
-  priority = false,
   fill = false,
+  priority = false,
   className,
 }) => {
   return (
-    <div className={className}>
+    <div className={`img-container ${className || ""}`}>
       <Image
         src={src}
         alt={alt}
         width={width}
         height={height}
-        fill={fill}
+        layout={fill ? "fill" : "responsive"}
         priority={priority}
       />
     </div>

@@ -1,13 +1,15 @@
 import React, { CSSProperties } from "react";
 import { useField } from "formik";
-import PropTypes from "prop-types";
+import Form from "react-bootstrap/Form";
 
-interface BaseInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+interface BaseInputProps
+  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "size"> {
   name: string;
   inputStyle?: CSSProperties;
   readOnly?: boolean;
   disabled?: boolean;
   inputClassName?: string;
+  size?: "sm" | "lg";
 }
 
 const BaseInput: React.FC<BaseInputProps> = ({
@@ -16,29 +18,23 @@ const BaseInput: React.FC<BaseInputProps> = ({
   readOnly,
   disabled,
   inputClassName,
+  size,
   ...props
 }) => {
   const [field] = useField(name);
 
   return (
-    <input
+    <Form.Control
       {...field}
       type="text"
       style={inputStyle}
       readOnly={readOnly}
       disabled={disabled}
-      {...props}
       className={inputClassName}
+      size={size}
+      {...props}
     />
   );
-};
-
-BaseInput.propTypes = {
-  name: PropTypes.string.isRequired,
-  inputStyle: PropTypes.object,
-  readOnly: PropTypes.bool,
-  disabled: PropTypes.bool,
-  className: PropTypes.string,
 };
 
 export { BaseInput };

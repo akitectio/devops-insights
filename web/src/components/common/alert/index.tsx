@@ -1,24 +1,26 @@
 import React from "react";
+import Alert from "react-bootstrap/Alert";
 
 interface BannerProps {
   message: string;
-  type?: keyof typeof bannerClasses;
+  type?: "error" | "success" | "warning" | "info";
 }
 
-const bannerClasses = {
-  error: "bg-red-500",
-  success: "bg-green-500",
-  warning: "bg-yellow-500",
-  info: "bg-blue-500",
-};
+const AlertBanner: React.FC<BannerProps> = ({ message, type = "info" }) => {
+  const variantMapping = {
+    error: "danger",
+    success: "success",
+    warning: "warning",
+    info: "info",
+  };
 
-const Alert: React.FC<BannerProps> = ({ message, type = "info" }) => {
-  const bannerColor = bannerClasses[type];
+  const variant = variantMapping[type];
+
   return (
-    <div className={`${bannerColor} text-white px-4 py-2 rounded-md mb-4`}>
+    <Alert variant={variant} className="mb-4">
       {message}
-    </div>
+    </Alert>
   );
 };
 
-export default Alert;
+export default AlertBanner;

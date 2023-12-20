@@ -1,57 +1,56 @@
 import React, { CSSProperties } from "react";
-import { useField } from "formik";
+import { useField, FieldHookConfig } from "formik";
+import Form from "react-bootstrap/Form";
 import { BaseInput, BaseInputProps } from "./BaseInput";
 
 interface InputProps extends BaseInputProps {
   label?: string;
-  className?: string;
-  placeholder?: string;
+  groupClassName?: string;
+  labelClassName?: string;
+  errorClassName?: string;
   groupStyle?: CSSProperties;
   labelStyle?: CSSProperties;
   errorStyle?: CSSProperties;
-  groupClassName?: string;
-  labelClassName?: string;
-  inputClassName?: string;
 }
 
 const Input: React.FC<InputProps> = ({
   label,
-  inputClassName,
-  placeholder,
-  groupStyle,
-  labelStyle,
   groupClassName,
   labelClassName,
+  errorClassName,
+  groupStyle,
+  labelStyle,
+  errorStyle,
   ...props
 }) => {
-  const [field, meta] = useField(props);
+  const { name } = props;
+  const [field, meta] = useField(name as string | FieldHookConfig<any>);
   return (
-    <div
-      style={groupStyle}
-      className={`flex flex-col space-y-2 ${groupClassName}`}
-    >
+    <Form.Group style={groupStyle} className={groupClassName}>
       {label && (
-        <label
-          htmlFor={props.name}
-          className={`block text-sm font-medium ${labelClassName}  ${
-            meta.touched && meta.error ? "text-red-500" : null
-          }`}
+        <Form.Label
+          htmlFor={name}
+          style={labelStyle}
+          className={labelClassName}
         >
           {label}
-        </label>
+        </Form.Label>
       )}
       <BaseInput
         {...field}
         {...props}
-        placeholder={placeholder}
-        inputClassName={`border rounded-md p-2 ${inputClassName} ${
-          meta.touched && meta.error ? "border-red-500" : null
-        }`}
+        className={meta.touched && meta.error ? "is-invalid" : ""}
       />
-      {meta.touched && meta.error ? (
-        <div className="text-red-500 text-xs">{meta.error}</div>
-      ) : null}
-    </div>
+      {meta.touched && meta.error && (
+        <Form.Control.Feedback
+          type="invalid"
+          style={errorStyle}
+          className={errorClassName}
+        >
+          {meta.error}
+        </Form.Control.Feedback>
+      )}
+    </Form.Group>
   );
 };
 

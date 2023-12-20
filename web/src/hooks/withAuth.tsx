@@ -20,7 +20,7 @@ const withAuth = (WrappedComponent: ComponentType<any>) => {
     }, [isLoggedIn]);
 
     // Pass additional props to the WrappedComponent
-    return isLoggedIn ? (
+    return !isLoggedIn ? (
       <AdminLayout>
         <WrappedComponent {...props} additionalProp="value" />
       </AdminLayout>
