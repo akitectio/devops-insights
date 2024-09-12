@@ -1,9 +1,28 @@
 server:
-  port: 5000
+  port: 5555
 
 spring:
   application:
     name: insight
+  # configure access to Vault
+  cloud:
+    vault:
+      config:
+        lifecycle:
+          min-renewal: 30s
+          expiry-threshold: 10s
+      uri: ${VAULT_ADDR:http://127.0.0.1:8200}
+      token: ${VAULT_TOKEN:hvs.nd1xSYmctbfthcKCvA8LE1Xy}
+      database:
+        enabled: true
+        role: insight-app
+        backend: database
+      kv:
+        backend: kv
+        enabled: false
+  # import configuration from vault
+  config:
+    import : vault://
   datasource:
     url: jdbc:postgresql://localhost:5432/insight?ApplicationName=INSIGHT_BACKEND_SERVICE&assumeMinServerVersion=9.0
     username: postgres
@@ -23,3 +42,7 @@ spring:
       hibernate:
         format_sql: true
     open-in-view: true
+
+
+secrets:
+  refresh-interval-ms: 180000
