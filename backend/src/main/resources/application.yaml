@@ -12,7 +12,7 @@ spring:
           min-renewal: 30s
           expiry-threshold: 10s
       uri: ${VAULT_ADDR:http://127.0.0.1:8200}
-      token: ${VAULT_TOKEN:token}
+      token:
       database:
         enabled: true
         role: insight-app
