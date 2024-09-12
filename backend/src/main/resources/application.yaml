@@ -4,6 +4,22 @@ server:
 spring:
   application:
     name: insight
+  # configure access to Vault
+  cloud:
+    vault:
+      config:
+        lifecycle:
+          min-renewal: 30s
+          expiry-threshold: 10s
+      uri: ${VAULT_ADDR:http://127.0.0.1:8200}
+      token: ${VAULT_TOKEN:hvs.nd1xSYmctbfthcKCvA8LE1Xy}
+      database:
+        enabled: true
+        role: insight-app
+        backend: database
+      kv:
+        backend: kv
+        enabled: false
   # import configuration from vault
   config:
     import: vault://
