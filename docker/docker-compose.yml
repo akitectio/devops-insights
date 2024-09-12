@@ -1,0 +1,61 @@
+version: "3.6"
+services:
+  postgres:
+    image: postgres:latest
+    container_name: keycloak_postgres
+    volumes:
+      - ./postgres/data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: keycloak
+      POSTGRES_USER: keycloak
+      POSTGRES_PASSWORD: password
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:25.0.0
+    command:
+      - start-dev
+    container_name: keycloak_server
+    ports:
+      - 8080:8080
+    volumes:
+      # Providers
+      # - './providers:/opt/keycloak/providers'
+      # Development theme folder
+      - "./keycloak/themes/custom-theme/theme:/opt/keycloak/themes"
+    depends_on:
+      - postgres
+    environment:
+      KC_HOSTNAME: localhost
+      # KC_HOSTNAME_STRICT: "false"
+      # KC_HOSTNAME_STRICT_BACKCHANNEL: "false"
+      # KC_PROXY: "none"
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://keycloak_postgres:5432/keycloak
+      KC_DB_USERNAME: keycloak
+      KC_DB_PASSWORD: password
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_HEALTH_ENABLED: "true"
+      KC_LOG_LEVEL: info
+
+  vault:
+    image: hashicorp/vault:latest
+    container_name: vault
+    ports:
+      - "8201:8201"
+    environment:
+      - TZ=Asia/Ho_Chi_Minh
+    #   VAULT_ADDR: "https://0.0.0.0:8201"
+    #   VAULT_LOCAL_CONFIG: '{"listener": [{"tcp":{"address": "0.0.0.0:8201","tls_disable":"0", "tls_cert_file":"/data/vault-volume/certificate.pem", "tls_key_file":"/data/vault-volume/key.pem"}}], "default_lease_ttl": "168h", "max_lease_ttl": "720h"}, "ui": true}'
+    #   VAULT_DEV_ROOT_TOKEN_ID: "00000000-0000-0000-0000-000000000000"
+    #   VAULT_TOKEN: "00000000-0000-0000-0000-000000000000"
+    cap_add:
+      - IPC_LOCK
+    volumes:
+      - ./vault/data:/data
+      - ./vault/config.hcl:/vault/config/config.hcl:ro
+    command: server
+
+volumes:
+  postgres_data:
+    driver: local

@@ -1,7 +1,0 @@
-.flaskenv
-Dockerfile
-Makefile
-docker-compose.yml
-.vs
-.idea
-.svn
